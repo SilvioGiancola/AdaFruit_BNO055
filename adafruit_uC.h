@@ -109,7 +109,7 @@ public:
             return ERR_FLOWCONTROL;
 
 
-     //   Question(QString("*echo:off?"));
+        Question(QString("*echo:off?"));
 
 
 
