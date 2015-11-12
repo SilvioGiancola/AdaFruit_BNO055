@@ -14,7 +14,47 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_Open_clicked()
 {
-    ada.Open();
+    ui->statusBar->showMessage("Adafruit BNO055 is opening, please wait ...");
+    if (ada.Open() == SUCCESS)
+    {
+        ui->groupBox_Accelerometer->setEnabled(true);
+        ui->groupBox_Euler->setEnabled(true);
+        ui->groupBox_Gravity->setEnabled(true);
+        ui->groupBox_Gyroscope->setEnabled(true);
+        ui->groupBox_LinerarAcceleration->setEnabled(true);
+        ui->groupBox_Magnetometer->setEnabled(true);
+        ui->groupBox_Quaternion->setEnabled(true);
+        ui->groupBox_Temperature->setEnabled(true);
+        ui->statusBar->showMessage("AdaFruit BNO055 open!",5000);
+    }
+    else
+        ui->statusBar->showMessage("Error in oppening AdaFruit BNO055");
+
+    return;
+}
+
+void MainWindow::on_pushButton_Close_clicked()
+{
+    ada.close();
+    ui->groupBox_Accelerometer->setEnabled(false);
+    ui->groupBox_Euler->setEnabled(false);
+    ui->groupBox_Gravity->setEnabled(false);
+    ui->groupBox_Gyroscope->setEnabled(false);
+    ui->groupBox_LinerarAcceleration->setEnabled(false);
+    ui->groupBox_Magnetometer->setEnabled(false);
+    ui->groupBox_Quaternion->setEnabled(false);
+    ui->groupBox_Temperature->setEnabled(false);
+
+    return;
+}
+
+void MainWindow::on_pushButton_Init_clicked()
+{
+    if (ada.Init() != SUCCESS)
+    {
+        return;
+    }
+
     return;
 }
 
@@ -64,4 +104,19 @@ void MainWindow::on_pushButton_GetData_clicked()
     ui->lcdNumber_Temperature->display(result->m_temperature);
 
     return;
+}
+
+
+
+
+
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
 }

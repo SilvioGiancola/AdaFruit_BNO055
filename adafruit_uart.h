@@ -20,12 +20,15 @@
 #define ERR_PLUG 7
 #define ERR_MESSAGE 8
 #define ERR_BAUDRATE 9
-//#define ERR_TIMEOUT 9
 
-#define REG_OPR_MODE	0x3D
-#define REG_PWR_MODE	0x3E
-#define REG_SYS_TRIGGER 0x3F
-#define REG_PAGE_ID		0x07
+
+
+#define REG_PAGE_ID         0x07
+#define REG_START_RAW_DATA  0x08
+#define REG_OPR_MODE        0x3D
+#define REG_PWR_MODE        0x3E
+#define REG_SYS_TRIGGER     0x3F
+
 
 #include <QWidget>
 #include <QThread>
@@ -51,14 +54,11 @@ class Adafruit_UART : public QSerialPort
     Q_OBJECT
 public:
 
-
-
-
     // Constructor
-    explicit Adafruit_UART(QWidget *parent = 0) : QSerialPort(parent) {depth = 0;}
+    explicit Adafruit_UART(QWidget *parent = 0) : QSerialPort(parent) {}
 
 
-
+    // Open the Serial connection
     int Open()
     {
         foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
@@ -98,22 +98,86 @@ public:
             return ERR_FLOWCONTROL;
 
 
+        return SUCCESS;
 
+    }
 
-        QThread::usleep(20*1000);
+    int Init()
+    {
+        if ( !isOpen() )
+            return ERROR;
 
-
-        QTime t;
-        t.start();
-
-
-
-
-        if (Init_BNO055() != SUCCESS)
+        std::cout << "Checking device ID, FW and BootLoader" << std::endl;
+        if ( CheckDevice() != SUCCESS )
         {
-            std::cout << "init ERROR!!!!!!!!!!!!!" << std::endl;
+            std::cout << "  -> Error Checking Device" << std::endl;
             return ERROR;
         }
+
+
+        std::cout << "Set OPR_MODE to CONFIG MODE" << std::endl;
+        if ( WriteRegister((quint8) REG_OPR_MODE, (quint8)0x00) != SUCCESS )
+        {
+            std::cout << "  -> Error entering in config mode" << std::endl;
+            return ERROR;
+        }
+
+
+        std::cout << "Set REG_SYS_TRIGGER to 20" << std::endl;
+        if ( WriteRegister((quint8) REG_SYS_TRIGGER, (quint8)0x20, true) != SUCCESS )
+        {
+            std::cout << "  -> Error setting REG_SYS_TRIGGER to 20" << std::endl;
+            return ERROR;
+        }
+
+
+        QThread::usleep(1000*1000);
+
+
+        std::cout << "Checking device ID, FW and BootLoader" << std::endl;
+        if ( CheckDevice() != SUCCESS )
+        {
+            std::cout << "  -> Error Checking Device" << std::endl;
+            return ERROR;
+        }
+
+
+        std::cout << "Set REG_POWER_MODE to 00" << std::endl;
+        if ( WriteRegister((quint8) REG_PWR_MODE, (quint8)0x00) != SUCCESS )
+        {
+            std::cout << "  -> Error setting REG_POWER_MODE to 00" << std::endl;
+            return ERROR;
+        }
+
+
+        QThread::usleep(1000*1000);
+
+
+        std::cout << "Set REG_PAGE_ID to 00" << std::endl;
+        if ( WriteRegister((quint8) REG_PAGE_ID, (quint8)0x00) != SUCCESS )
+        {
+            std::cout << "  -> Error setting REG_PAGE_ID to 00" << std::endl;
+            return ERROR;
+        }
+
+
+        std::cout << "Set REG_SYS_TRIGGER to 80" << std::endl;
+        if ( WriteRegister((quint8) REG_SYS_TRIGGER, (quint8)0x80) != SUCCESS )
+        {
+            std::cout << "  -> Error setting REG_SYS_TRIGGER to 20" << std::endl;
+            return ERROR;
+        }
+
+
+        std::cout << "Set OPR_MODE to FUSION MODE" << std::endl;
+        if ( WriteRegister((quint8) REG_OPR_MODE, (quint8)0x0C) != SUCCESS )
+        {
+            std::cout << "  -> Error entering in FUSION MODE" << std::endl;
+            return ERROR;
+        }
+
+
+        QThread::usleep(1000*1000);
 
 
 
@@ -123,9 +187,12 @@ public:
 
     int ReadAllData(Adafruit_Data * result)
     {
-        std::cout << "Reading 45 bytes (47bytes response)" << std::endl;
+        if ( !isOpen() )
+            return ERROR;
+
+
         QByteArray input ;
-        ReadRegister(input, (quint8) 0x08, 0x2d);
+        ReadRegister(input, (quint8) REG_START_RAW_DATA, 0x2d);
 
         if( !(((quint8)input[0] == (quint8)0xBB) &&
               ((quint8)input[1] == (quint8)0x2d)) )
@@ -214,23 +281,12 @@ public:
 
 
 
-
-        std::cout << result->m_temperature << std::endl;
-        PlotAnswer(input);
-
-
-
         return SUCCESS;
     }
 
 
 
 private:
-    bool plugged;
-    int depth;
-
-
-
     void PlotAnswer(QByteArray answer)
     {
 
@@ -257,8 +313,6 @@ private:
         return;
     }
 
-
-
     int CheckDevice()
     {
         QByteArray answer;
@@ -277,123 +331,7 @@ private:
         return SUCCESS;
     }
 
-
-
-    int Init_BNO055()
-    {
-
-
-
-
-
-        QThread::usleep(1000*1000);
-
-
-
-
-        std::cout << "Checking device ID, FW and BootLoader" << std::endl;
-        if ( CheckDevice() != SUCCESS )
-        {
-            std::cout << "  -> Error Checking Device" << std::endl;
-            return ERROR;
-        }
-
-
-
-
-
-        std::cout << "Set OPR_MODE to CONFIG MODE" << std::endl;
-        if ( WriteRegister((quint8) 0x3D, (quint8)0x00) != SUCCESS )
-        {
-            std::cout << "  -> Error entering in config mode" << std::endl;
-            return ERROR;
-        }
-
-
-
-
-
-
-        std::cout << "Set REG_SYS_TRIGGER to 20" << std::endl;
-        if ( WriteRegister((quint8) 0x3F, (quint8)0x20, true) != SUCCESS )
-        {
-            std::cout << "  -> Error setting REG_SYS_TRIGGER to 20" << std::endl;
-            return ERROR;
-        }
-
-
-
-        QThread::usleep(1000*1000);
-
-
-
-
-
-
-
-
-        std::cout << "Checking device ID, FW and BootLoader" << std::endl;
-        if ( CheckDevice() != SUCCESS )
-        {
-            std::cout << "  -> Error Checking Device" << std::endl;
-            return ERROR;
-        }
-
-
-
-        std::cout << "Set REG_POWER_MODE to 00" << std::endl;
-        if ( WriteRegister((quint8) 0x3E, (quint8)0x00) != SUCCESS )
-        {
-            std::cout << "  -> Error setting REG_POWER_MODE to 00" << std::endl;
-            return ERROR;
-        }
-
-
-        QThread::usleep(1000*1000);
-
-
-
-
-
-
-        std::cout << "Set REG_PAGE_ID to 00" << std::endl;
-        if ( WriteRegister((quint8) 0x07, (quint8)0x00) != SUCCESS )
-        {
-            std::cout << "  -> Error setting REG_PAGE_ID to 00" << std::endl;
-            return ERROR;
-        }
-
-
-
-        std::cout << "Set REG_SYS_TRIGGER to 80" << std::endl;
-        if ( WriteRegister((quint8) 0x3F, (quint8)0x80) != SUCCESS )
-        {
-            std::cout << "  -> Error setting REG_SYS_TRIGGER to 20" << std::endl;
-            return ERROR;
-        }
-
-
-
-
-        std::cout << "Set OPR_MODE to FUSION MODE" << std::endl;
-        if ( WriteRegister((quint8) 0x3D, (quint8)0x0C) != SUCCESS )
-        {
-            std::cout << "  -> Error entering in FUSION MODE" << std::endl;
-            return ERROR;
-        }
-
-
-
-        QThread::usleep(20*1000);
-
-
-
-        return SUCCESS;
-
-    }
-
-
-
+    // Read in the register
     int ReadRegister(QByteArray& receive, quint8 reg, quint8 size = 0x01)
     {
         QThread::usleep(1*1000);
@@ -431,28 +369,22 @@ private:
             receive.append(readAll());
         }
 
-        if ( !((quint8)receive[0] == (quint8)0xBB) )
+        if ( (quint8) receive[0] == (quint8) 0xEE &&
+             (quint8) receive[1] == (quint8) 0x07 )
         {
-            //  std::cout << "error in reading" << std::endl;
-            //   PlotAnswer(receive);
-            // return ERROR;
             std::cout << " overrun error" << std::endl;
-            depth++;
-            if (depth > 5)
-            {
-                depth = 0;
-                return ERROR;
-            }
-            QByteArray next_rec;
-            int ret = ReadRegister(next_rec,  reg,  size);
-            depth=0;
-            return ret;
+            return ERROR;
+        }
+        else if ( !((quint8)receive[0] == (quint8)0xBB) )
+        {
+            std::cout << " error reading" << std::endl;
+            return ERROR;
         }
 
         return SUCCESS;
     }
 
-
+    // Write in the register
     int WriteRegister(quint8 reg, quint8 value, bool simple = false)
     {
         int pause = 0;
@@ -506,6 +438,7 @@ private:
         return SUCCESS;
     }
 
+    bool plugged;
 
 };
 

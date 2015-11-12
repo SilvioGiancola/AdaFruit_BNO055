@@ -12,7 +12,7 @@ TARGET = AdaFruit_BNO055
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
+SOURCES +=\
         mainwindow.cpp
 
 HEADERS  += mainwindow.h \
