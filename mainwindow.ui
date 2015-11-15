@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
-    <height>423</height>
+    <width>841</width>
+    <height>791</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,222 +18,6 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="2">
-     <widget class="QGroupBox" name="groupBox_Gyroscope">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="title">
-       <string>Gyroscope</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_6">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_Gyroscope_X">
-         <property name="text">
-          <string>X</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Gyroscope_X">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_Gyroscope_Y">
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Gyroscope_Y">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_Gyroscope_Z">
-         <property name="text">
-          <string>Z</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Gyroscope_Z">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="4">
-     <widget class="QGroupBox" name="groupBox_Accelerometer">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="title">
-       <string>Accelerometer</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_5">
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_Accelerometer_Y">
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_Accelerometer_Z">
-         <property name="text">
-          <string>Z</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_Accelerometer_X">
-         <property name="text">
-          <string>X</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Accelerometer_X">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Accelerometer_Y">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Accelerometer_Z">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QGroupBox" name="groupBox_Magnetometer">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="title">
-       <string>Magnetometer</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_7">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_Magnetometer_X">
-         <property name="text">
-          <string>X</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Magnetometer_X">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_Magnetometer_Y">
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Magnetometer_Y">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_Magnetometer_Z">
-         <property name="text">
-          <string>Z</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Magnetometer_Z">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QPushButton" name="pushButton_Open">
       <property name="text">
@@ -241,186 +25,13 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QGroupBox" name="groupBox_Gravity">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="title">
-       <string>Gravity</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_Gravity_X">
-         <property name="text">
-          <string>X</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Gravity_X">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_Gravity_Y">
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Gravity_Y">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_Gravity_Z">
-         <property name="text">
-          <string>Z</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Gravity_Z">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QGroupBox" name="groupBox_Temperature">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="title">
-       <string>Temperature</string>
-      </property>
-      <widget class="QLCDNumber" name="lcdNumber_Temperature">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>17</x>
-         <y>25</y>
-         <width>91</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="digitCount">
-        <number>8</number>
-       </property>
-       <property name="segmentStyle">
-        <enum>QLCDNumber::Flat</enum>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QGroupBox" name="groupBox_Euler">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="title">
-       <string>Euler</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="2" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Euler_Y">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_Euler_Z">
-         <property name="text">
-          <string>Z</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Euler_Z">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_Euler_X">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>8</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_Euler_Y">
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_Euler_X">
-         <property name="text">
-          <string>X</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="4">
+    <item row="5" column="1">
      <widget class="QGroupBox" name="groupBox_LinerarAcceleration">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="title">
-       <string>Linear Acceleration</string>
+       <string>Linear Acceleration (m/s^2)</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -483,10 +94,103 @@
          </property>
         </widget>
        </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_Lia">
+         <property name="text">
+          <string>GetLia</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
-    <item row="3" column="3">
+    <item row="0" column="1">
+     <widget class="QPushButton" name="pushButton_Init">
+      <property name="text">
+       <string>Init</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QGroupBox" name="groupBox_Gyroscope">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>Gyroscope (deg/s)</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_Gyroscope_X">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Gyroscope_X">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_Gyroscope_Y">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Gyroscope_Y">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_Gyroscope_Z">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Gyroscope_Z">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_Gyr">
+         <property name="text">
+          <string>GetGyr</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="4" column="1">
      <widget class="QGroupBox" name="groupBox_Quaternion">
       <property name="enabled">
        <bool>false</bool>
@@ -572,29 +276,393 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_GetQuat">
+         <property name="text">
+          <string>GetQuat</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="pushButton_GetData">
-      <property name="text">
-       <string>GetData</string>
+    <item row="5" column="0">
+     <widget class="QGroupBox" name="groupBox_Accelerometer">
+      <property name="enabled">
+       <bool>false</bool>
       </property>
+      <property name="title">
+       <string>Accelerometer (m/s^2)</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_Accelerometer_Y">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_Accelerometer_Z">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_Accelerometer_X">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Accelerometer_X">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Accelerometer_Y">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Accelerometer_Z">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_GetAcc">
+         <property name="text">
+          <string>GetAcc</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
-    <item row="0" column="3">
+    <item row="4" column="0">
+     <widget class="QGroupBox" name="groupBox_Euler">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>Euler (degree)</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_Euler_Y">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Euler_Y">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_Euler_Z">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Euler_Z">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Euler_X">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_Euler_X">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_GetEul">
+         <property name="text">
+          <string>GetEul</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QGroupBox" name="groupBox_Magnetometer">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>Magnetometer (uT)</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_Magnetometer_X">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Magnetometer_X">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_Magnetometer_Y">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Magnetometer_Y">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_Magnetometer_Z">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Magnetometer_Z">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_GetMag">
+         <property name="text">
+          <string>GetMag</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
      <widget class="QPushButton" name="pushButton_Close">
       <property name="text">
        <string>Close</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="pushButton_Init">
+    <item row="1" column="1">
+     <widget class="QPushButton" name="pushButton_GetData">
       <property name="text">
-       <string>Init</string>
+       <string>Get (ALL) Data</string>
       </property>
      </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QGroupBox" name="groupBox_Gravity">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>Gravity (m/s^2)</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_Gravity_X">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Gravity_X">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_Gravity_Y">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Gravity_Y">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_Gravity_Z">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLCDNumber" name="lcdNumber_Gravity_Z">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_GetGrv">
+         <property name="text">
+          <string>GetGrv</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QGroupBox" name="groupBox_Temperature">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>Temperature (C)</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_9">
+       <item row="0" column="0">
+        <widget class="QLCDNumber" name="lcdNumber_Temperature">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Time (ms)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLCDNumber" name="lcdNumber_Time">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="digitCount">
+          <number>8</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="5" rowspan="6">
+     <widget class="QVTKWidget" name="qvtkWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -603,7 +671,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>666</width>
+     <width>841</width>
      <height>25</height>
     </rect>
    </property>
@@ -619,6 +687,13 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QVTKWidget</class>
+   <extends>QWidget</extends>
+   <header>QVTKWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

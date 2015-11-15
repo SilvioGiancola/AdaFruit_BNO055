@@ -25,6 +25,14 @@
 
 #define REG_PAGE_ID         0x07
 #define REG_START_RAW_DATA  0x08
+#define REG_START_ACC_DATA  0x08
+#define REG_START_MAG_DATA  0x0E
+#define REG_START_GYR_DATA  0x14
+#define REG_START_EUL_DATA  0x1A
+#define REG_START_QUA_DATA  0x20
+#define REG_START_LIA_DATA  0x28
+#define REG_START_GRV_DATA  0x2E
+#define REG_START_TMP_DATA  0x34
 #define REG_OPR_MODE        0x3D
 #define REG_PWR_MODE        0x3E
 #define REG_SYS_TRIGGER     0x3F
@@ -71,7 +79,6 @@ public:
 
         }
 
-
         plugged = true;
         if (this->portName().isEmpty())
             plugged = false;
@@ -97,15 +104,20 @@ public:
         if (!setFlowControl(QSerialPort::NoFlowControl))
             return ERR_FLOWCONTROL;
 
-
         return SUCCESS;
-
     }
 
+
+    // Try first communication and initilize the device
     int Init()
     {
+        std::cout << "  --> INIT <--  " << std::endl;
         if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
             return ERROR;
+        }
+
 
         std::cout << "Checking device ID, FW and BootLoader" << std::endl;
         if ( CheckDevice() != SUCCESS )
@@ -180,15 +192,20 @@ public:
         QThread::usleep(1000*1000);
 
 
-
         return SUCCESS;
 
     }
 
+
+    // Read all the 45 data available
     int ReadAllData(Adafruit_Data * result)
     {
+
         if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
             return ERROR;
+        }
 
 
         QByteArray input ;
@@ -198,83 +215,35 @@ public:
               ((quint8)input[1] == (quint8)0x2d)) )
         {
             std::cout << "error" << std::endl;
-
             return ERROR;
         }
 
 
         int16_t s[4];
-        int off;
+        int off = 2;
+
 
 
         // plain accelerometer, assumes [a] = m/s^2
-        off = 2;
-        for (int i=0; i<3; i++)
-        {
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
-            result->m_accelerometer[i] = ( (float) s[i] ) / 100.0f;
-        }
-
-        // linear acceleration, assumes [a] = m/s^2
-        off += 6;
-        for (int i=0; i<3; i++)
-        {
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
-            result->m_linear_acceleration[i] = ( (float) s[i] ) / 100.0f;
-        }
-
-        // gravity, assumes [a] = m/s^2
-        off += 6;
-        for (int i=0; i<3; i++)
-        {
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
-            result->m_gravity[i] = ( (float) s[i] ) / 100.0f;
-        }
+        result->m_accelerometer =  convertQByteArrayInVector3f(input.mid(2,6));
 
         // magnetometer, always [B] = uT
-        off += 6;
-        for (int i=0; i<3; i++)
-        {
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
-            result->m_magnetometer[i] = ( (float) s[i] ) / 100.0f;
-        }
+        result->m_magnetometer = convertQByteArrayInVector3f(input.mid(8,6));
 
         // gyroscope, assumes [w] = deg/s
-        off += 6;
-        for (int i=0; i<3; i++)
-        {
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
-            result->m_gyroscope[i] = ( (float) s[i] ) / 100.0f;
-        }
+        result->m_gyroscope = convertQByteArrayInVector3f(input.mid(14,6));
 
         // euler angles, assumes [e] = deg/s
-        off += 6;
-        for (int i=0; i<3; i++)
-        {
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
-            result->m_euler_angles[i] = ( (float) s[i] ) / 100.0f;
-        }
+        result->m_euler_angles = convertQByteArrayInVector3f(input.mid(20,6));
 
         // quaternion, no unit
-        off += 8;
-        for (int i=0; i<4; i++)
-            s[i] = (int16_t)static_cast<const quint8>(input[off + 2*i]) | (((int16_t)static_cast<const quint8>(input[off + 2*i + 1]))<<8);
+        result->m_quaternion = convertQByteArrayInQuaternionf(input.mid(26,8));
 
-        result->m_quaternion.w() = ((float)s[0]);
-        result->m_quaternion.x() = ((float)s[1]);
-        result->m_quaternion.y() = ((float)s[2]);
-        result->m_quaternion.z() = ((float)s[3]);
+        // linear acceleration, assumes [a] = m/s^2
+        result->m_linear_acceleration = convertQByteArrayInVector3f(input.mid(34,6));
 
-        double norm =	result->m_quaternion.w()*result->m_quaternion.w() +
-                result->m_quaternion.x()*result->m_quaternion.x() +
-                result->m_quaternion.y()*result->m_quaternion.y() +
-                result->m_quaternion.z()*result->m_quaternion.z();
-        norm = (norm>=0.0 ? 1.0/sqrt(norm) : 0.0);
-        result->m_quaternion.w()*=float(norm);
-        result->m_quaternion.x()*=float(norm);
-        result->m_quaternion.y()*=float(norm);
-        result->m_quaternion.z()*=float(norm);
-
+        // gravity, assumes [a] = m/s^2
+        result->m_gravity = convertQByteArrayInVector3f(input.mid(40,6));
 
         // temperature, assuming [T] = C
         result->m_temperature = (float) ((int16_t)static_cast<const quint8>(input[46]));
@@ -284,6 +253,175 @@ public:
         return SUCCESS;
     }
 
+    // Read the accelerometer;
+    int GetAcc(Eigen::Vector3f * acc)
+    {
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_ACC_DATA, 6);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)6)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *acc =  convertQByteArrayInVector3f(input.mid(2,6));
+
+        return SUCCESS;
+    }
+
+    // Read the magnetometer;
+    int GetMag(Eigen::Vector3f * mag)
+    {
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_MAG_DATA, 6);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)6)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *mag =  convertQByteArrayInVector3f(input.mid(2,6));
+
+        return SUCCESS;
+    }
+
+    // Read the linear_acceleration;
+    int GetLia(Eigen::Vector3f * lia)
+    {
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_LIA_DATA, 6);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)6)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *lia =  convertQByteArrayInVector3f(input.mid(2,6));
+
+        return SUCCESS;
+    }
+
+    // Read the gyroscope;
+    int GetGyr(Eigen::Vector3f * gyr)
+    {
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_GYR_DATA, 6);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)6)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *gyr =  convertQByteArrayInVector3f(input.mid(2,6));
+
+        return SUCCESS;
+    }
+
+    // Read the euler_angles;
+    int GetEul(Eigen::Vector3f * eul)
+    {
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_EUL_DATA, 6);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)6)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *eul =  convertQByteArrayInVector3f(input.mid(2,6));
+
+        return SUCCESS;
+    }
+
+    // Read the quaternion
+    int GetQuat(Eigen::Quaternionf * quat)
+    {
+
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_QUA_DATA, 8);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)8)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *quat = convertQByteArrayInQuaternionf(input.mid(2,8));
+
+        return SUCCESS;
+    }
+
+    // Read the gravity;
+    int GetGrv(Eigen::Vector3f * grv)
+    {
+        if ( !isOpen() )
+        {
+            std::cout << "  -> Error Device not opened" << std::endl;
+            return ERROR;
+        }
+
+        QByteArray input ;
+        ReadRegister(input, (quint8) REG_START_GRV_DATA, 6);
+
+        if( !(((quint8)input[0] == (quint8)0xBB) &&
+              ((quint8)input[1] == (quint8)6)) )
+        {
+            std::cout << "error" << std::endl;
+            return ERROR;
+        }
+
+        *grv =  convertQByteArrayInVector3f(input.mid(2,6));
+
+        return SUCCESS;
+    }
 
 
 private:
@@ -330,6 +468,64 @@ private:
         }
         return SUCCESS;
     }
+
+    // Data Conversion
+    Eigen::Vector3f convertQByteArrayInVector3f(QByteArray m_bytearray)
+    {
+        Eigen::Vector3f m_vec;
+        int16_t m_temp;
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[0]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[1]))<<8);
+        m_vec.data()[0] = ( (float) m_temp ) / 100.0f;
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[2]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[3]))<<8);
+        m_vec.data()[1] = ( (float) m_temp ) / 100.0f;
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[4]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[5]))<<8);
+        m_vec.data()[2] = ( (float) m_temp ) / 100.0f;
+
+        return m_vec;
+    }
+
+    Eigen::Quaternionf convertQByteArrayInQuaternionf(QByteArray m_bytearray)
+    {
+        Eigen::Quaternionf m_quat;
+        int16_t m_temp;
+
+
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[0]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[1]))<<8);
+        m_quat.w() = ((float)m_temp);
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[2]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[3]))<<8);
+        m_quat.x() = ((float)m_temp);
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[4]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[5]))<<8);
+        m_quat.y() = ((float)m_temp);
+
+        m_temp = (int16_t)static_cast<const quint8>(m_bytearray[6]) |
+                (((int16_t)static_cast<const quint8>(m_bytearray[7]))<<8);
+        m_quat.z() = ((float)m_temp);
+
+        double norm = m_quat.w()*m_quat.w() +
+                m_quat.x()*m_quat.x() +
+                m_quat.y()*m_quat.y() +
+                m_quat.z()*m_quat.z();
+        norm = (norm>=0.0 ? 1.0/sqrt(norm) : 0.0);
+        m_quat.w()*=float(norm);
+        m_quat.x()*=float(norm);
+        m_quat.y()*=float(norm);
+        m_quat.z()*=float(norm);
+
+        return m_quat;
+    }
+
 
     // Read in the register
     int ReadRegister(QByteArray& receive, quint8 reg, quint8 size = 0x01)

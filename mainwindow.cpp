@@ -5,10 +5,31 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),  ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Create 3D Viewer
+    viewer.reset(new pcl::visualization::PCLVisualizer("Viewer",false));
+    ui->qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
+
+    viewer->addCoordinateSystem(1.0);
+    // on_pushButton_CleanViewer_clicked();
+    viewer->setCameraPosition(1,10,1, // mi posiziono dietro ad un Kinect
+                              0.5,0.5,0.5, // guardo un punto centrale
+                              0,0,1);   // orientato con la z verso l'alto
+    viewer->setCameraClipDistances(-10,10);
+    viewer->setBackgroundColor (0.5, 0.5, 0.5);
+    ui->qvtkWidget->update ();
+
+
+
+    viewer->setupInteractor(ui->qvtkWidget->GetInteractor(),ui->qvtkWidget->GetRenderWindow());
+    viewer->getInteractorStyle()->setKeyboardModifier(pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
+
+
 }
 
 MainWindow::~MainWindow()
 {
+    ada.close();
     delete ui;
 }
 
@@ -58,11 +79,18 @@ void MainWindow::on_pushButton_Init_clicked()
     return;
 }
 
+
+
 void MainWindow::on_pushButton_GetData_clicked()
 {
+    QTime t;
+    t.start();
+
     Adafruit_Data * result = new Adafruit_Data();
-    if (ada.ReadAllData(result)!=SUCCESS)
+    if (ada.ReadAllData(result) != SUCCESS)
         return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
 
     // Accelerometer
     ui->lcdNumber_Accelerometer_X->display(result->m_accelerometer[0]);
@@ -103,10 +131,157 @@ void MainWindow::on_pushButton_GetData_clicked()
     // Temperature
     ui->lcdNumber_Temperature->display(result->m_temperature);
 
+
+    viewer->removeAllCoordinateSystems();
+    Eigen::Matrix4f trans = Eigen::Matrix4f::Identity();
+    trans.block(0,0,3,3) = result->m_quaternion.matrix();
+    viewer->addCoordinateSystem(1.0, Eigen::Affine3f(trans));
+    ui->qvtkWidget->update();
+
     return;
 }
 
+void MainWindow::on_pushButton_Gyr_clicked()
+{
+    QTime t;
+    t.start();
 
+    Eigen::Vector3f result;
+    if (ada.GetGyr(&result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Gravity
+    ui->lcdNumber_Gyroscope_X->display(result[0]);
+    ui->lcdNumber_Gyroscope_Y->display(result[1]);
+    ui->lcdNumber_Gyroscope_Z->display(result[2]);
+
+}
+
+void MainWindow::on_pushButton_GetEul_clicked()
+{
+    QTime t;
+    t.start();
+
+    Eigen::Vector3f result;
+    if (ada.GetEul(&result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Euler Angles
+    ui->lcdNumber_Euler_X->display(result[0]);
+    ui->lcdNumber_Euler_Y->display(result[1]);
+    ui->lcdNumber_Euler_Z->display(result[2]);
+
+/*
+    viewer->removeAllCoordinateSystems();
+
+
+    Eigen::Matrix4f trans = Eigen::Matrix4f::Identity();
+
+    Eigen::Matrix3f m;
+    m = Eigen::AngleAxisf(result[2]/10.0, Eigen::Vector3f::UnitZ())
+            * Eigen::AngleAxisf(result[1]/10.0, Eigen::Vector3f::UnitY())
+            * Eigen::AngleAxisf(result[0]/10.0, Eigen::Vector3f::UnitX());
+    trans.block(0,0,3,3) = m;
+    viewer->addCoordinateSystem(1.0, Eigen::Affine3f(trans));
+    ui->qvtkWidget->update();*/
+}
+
+void MainWindow::on_pushButton_GetAcc_clicked()
+{
+    QTime t;
+    t.start();
+
+    Eigen::Vector3f result;
+    if (ada.GetAcc(&result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Accelerometer
+    ui->lcdNumber_Accelerometer_X->display(result[0]);
+    ui->lcdNumber_Accelerometer_Y->display(result[1]);
+    ui->lcdNumber_Accelerometer_Z->display(result[2]);
+}
+
+void MainWindow::on_pushButton_GetGrv_clicked()
+{
+    QTime t;
+    t.start();
+
+    Eigen::Vector3f result;
+    if (ada.GetGrv(&result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Gravity
+    ui->lcdNumber_Gravity_X->display(result[0]);
+    ui->lcdNumber_Gravity_Y->display(result[1]);
+    ui->lcdNumber_Gravity_Z->display(result[2]);
+}
+
+void MainWindow::on_pushButton_GetMag_clicked()
+{
+    QTime t;
+    t.start();
+
+    Eigen::Vector3f result;
+    if (ada.GetMag(&result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Magnetometer
+    ui->lcdNumber_Magnetometer_X->display(result[0]);
+    ui->lcdNumber_Magnetometer_Y->display(result[1]);
+    ui->lcdNumber_Magnetometer_Z->display(result[2]);
+}
+
+void MainWindow::on_pushButton_Lia_clicked()
+{
+    QTime t;
+    t.start();
+
+    Eigen::Vector3f result;
+    if (ada.GetLia(&result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Linear acceleration
+    ui->lcdNumber_LinearAcceleration_X->display(result[0]);
+    ui->lcdNumber_LinearAcceleration_Y->display(result[1]);
+    ui->lcdNumber_LinearAcceleration_Z->display(result[2]);
+}
+
+void MainWindow::on_pushButton_GetQuat_clicked()
+{
+    QTime t;
+    t.start();
+
+    Eigen::Quaternionf * result = new Eigen::Quaternionf();
+    if (ada.GetQuat(result) != SUCCESS)
+        return;
+
+    ui->lcdNumber_Time->display(t.elapsed());
+
+    // Quaternion
+    ui->lcdNumber_Quaternion_W->display(result->w());
+    ui->lcdNumber_Quaternion_X->display(result->x());
+    ui->lcdNumber_Quaternion_Y->display(result->y());
+    ui->lcdNumber_Quaternion_Z->display(result->z());
+
+
+    viewer->removeAllCoordinateSystems();
+    Eigen::Matrix4f trans = Eigen::Matrix4f::Identity();
+    trans.block(0,0,3,3) = result->matrix();
+    viewer->addCoordinateSystem(1.0, Eigen::Affine3f(trans));
+    ui->qvtkWidget->update();
+}
 
 
 
@@ -120,3 +295,4 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+
